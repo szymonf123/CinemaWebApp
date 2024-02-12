@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  html(lang="pl")
+    head
+      meta(charset="UTF-8")
+    body
+      header
+        h1= title
+      nav
+        ul
+          a
+            li Dane podstawowe
+          a
+            li Panel administratora
+      article
+        p Aplikacja służy do moderacji bazy danych filmów i seansów w naszym kinie. Pozwala na dodawanie, modyfikowanie, jak i usuwanie filmów oraz seansów.
+        p W razie problemów skontaktuj się z administracją:
+        p Telefon: #{phone}
+        p Adres e-mail: #{email}
+      footer #{title} 2024
