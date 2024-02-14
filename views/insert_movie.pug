@@ -15,4 +15,38 @@ block content
                         li Panel moderatora
             article
                 h2 Dodaj nowy film
+                form(method="POST", class="insert")
+                    div(class="category")
+                        div(class="description") Podaj tytuł filmu:
+                        div(class="field")
+                            input(type="text", name="title")
+                    div(class="category")
+                        div(class="description") Podaj gatunek filmu:
+                        div(class="field")
+                            input(type="text", name="type")
+                    div(class="category")
+                        div(class="description") Podaj studio produkcji filmu:
+                        div(class="field")
+                            input(type="text", name="studio")
+                    div(class="category")
+                        div(class="description") Podaj reżysera filmu:
+                        div(class="field")
+                            input(type="text", name="director")
+                    div(class="category")
+                        div(class="description") Podaj obsadę filmu (2-4 najważniejszych aktorów):
+                        div(class="field")
+                            textarea(name="cast")
+                    div(class="category")
+                        div(class="description") Podaj opis filmu:
+                        div(class="field")
+                            textarea(name="descr")
+                    div(class="category")
+                        div(class="description") Podaj rok produkcji filmu:
+                        div(class="field")
+                            input(type="number", name="year")
+                    div(class="category")
+                        div(class="description") Podaj kategorię wiekową filmu:
+                        div(class="field")
+                            input(type="number", name="age")
+                    input(type="submit")
             footer #{title} 2024

@@ -16,4 +16,20 @@ block content
             article
                 h2 Dodaj nowy seans
                 p Uwaga! Dodawany seans dotyczy istniejącego filmu
+                form(method="POST", class="insert")
+                    div(class="category")
+                        div(class="description") Wybierz film:
+                        div(class="field")
+                            select(name="movie")
+                                option(value="1") 1
+                                option(value="2") 2
+                    div(class="category")
+                        div(class="description") Podaj datę seansu:
+                        div(class="field")
+                            input(type="date", name="seance_date")
+                    div(class="category")
+                        div(class="description") Podaj godzinę seansu:
+                        div(class="field")
+                            input(type="time", name="seance_time")
+                    input(type="submit")
             footer #{title} 2024

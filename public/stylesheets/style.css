@@ -3,6 +3,8 @@ body {
   margin-left: 15%;
   margin-right: 15%;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Calibri Light", serif;
+  font-size: 120%;
 }
 
 #navi {
@@ -48,4 +50,39 @@ body {
 #menu a:hover {
   background-color: white;
   color: lightskyblue;
+}
+
+.insert .category {
+  width: 90%;
+  padding-bottom: 20px;
+}
+
+.insert .description {
+  width: 30%;
+  float: left;
+  text-align: left;
+}
+
+.insert .field {
+  width: 70%;
+  font-size: 120%;
+}
+
+textarea {
+  max-width: 100%;
+  width: 50%;
+  font-size: 100%;
+  border: 2px solid black;
+  font-family: "Calibri Light", serif;
+}
+
+input[name], select{
+  width: 50%;
+  font-size: 100%;
+  border: 2px solid black;
+  font-family: "Calibri Light", serif;
+}
+
+footer {
+  padding-top: 5%;
 }
