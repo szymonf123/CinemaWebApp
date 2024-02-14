@@ -1,6 +1,30 @@
 body {
   padding: 50px;
+  margin-left: 15%;
+  margin-right: 15%;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#navi {
+  background-color: lightskyblue;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 4%;
+  padding: 1%;
+  width: 100%;
+}
+
+#navi a {
+  padding: 2%;
+  border: 4px solid white;
+  color: white;
+  font-size: 150%;
+}
+
+#navi a:hover {
+  background-color: white;
+  color: lightskyblue;
 }
 
 #menu {
@@ -9,12 +33,13 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 4%;
-  padding: 2.5%;
-  width: 50%;
+  padding: 1%;
+  padding-bottom: 2%;
+  width: 100%;
 }
 
 #menu a {
-  padding: 4%;
+  padding: 2%;
   border: 4px solid white;
   color: white;
   font-size: 150%;
