@@ -16,13 +16,34 @@ block content
             article
                 h2 Dodaj nowy seans
                 p Uwaga! Dodawany seans dotyczy istniejącego filmu
-                form(method="POST", class="insert")
+                form(method="POST", class="insert", action="/admin/insert_seance/execute")
                     div(class="category")
                         div(class="description") Wybierz film:
-                        div(class="field")
-                            select(name="movie")
-                                option(value="1") 1
-                                option(value="2") 2
+                        table
+                            thead
+                                tr
+                                    th Wybierz
+                                    th Tytuł
+                                    th Gatunek
+                                    th Studio
+                                    th Reżyser
+                                    th Obsada
+                                    th Opis
+                                    th Rok produkcji
+                                    th Kategoria wiekowa
+                            tbody
+                                each movie in data
+                                    tr
+                                        td
+                                            input(type="radio", name="ID", value=movie.MovieID)
+                                        td= movie.Title
+                                        td= movie.Type
+                                        td= movie.Studio
+                                        td= movie.Director
+                                        td= movie.Cast
+                                        td= movie.Description
+                                        td= movie.Year
+                                        td= movie.Age
                     div(class="category")
                         div(class="description") Podaj datę seansu:
                         div(class="field")
