@@ -15,4 +15,34 @@ block content
                         li Panel moderatora
             article
                 h2 Usuń film
+                p Można usunąć naraz wiele filmów!
+                form(method="POST", class="insert", action="/admin/delete_movie/execute")
+                    div(class="category")
+                        div(class="description") Wybierz film:
+                        table
+                            thead
+                                tr
+                                    th Wybierz
+                                    th Tytuł
+                                    th Gatunek
+                                    th Studio
+                                    th Reżyser
+                                    th Obsada
+                                    th Opis
+                                    th Rok produkcji
+                                    th Kategoria wiekowa
+                            tbody
+                                each movie in data
+                                    tr
+                                        td
+                                            input(type="checkbox", name="ID", value=movie.MovieID)
+                                        td= movie.Title
+                                        td= movie.Type
+                                        td= movie.Studio
+                                        td= movie.Director
+                                        td= movie.Cast
+                                        td= movie.Description
+                                        td= movie.Year
+                                        td= movie.Age
+                    input(type="submit")
             footer #{title} 2024

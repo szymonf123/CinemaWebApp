@@ -34,11 +34,16 @@ router.get('/admin/update_movie', function(req, res) {
     if (err)
       throw  err;
     res.render('update_movie', {title : 'Kinomaniak', data : data});
-  })
+  });
 });
 
 router.get('/admin/delete_movie', function(req, res) {
-  res.render('delete_movie', {title : 'Kinomaniak'});
+  const sql = "SELECT * FROM movies";
+  db.query(sql, (err, data) => {
+    if (err)
+      throw  err;
+    res.render('delete_movie', {title : 'Kinomaniak', data : data});
+  });
 });
 
 router.get('/admin/insert_seance', function(req, res) {
@@ -47,7 +52,7 @@ router.get('/admin/insert_seance', function(req, res) {
     if (err)
       throw  err;
     res.render('insert_seance', {title : 'Kinomaniak', data : data});
-  })
+  });
 });
 
 router.get('/admin/update_seance', function(req, res) {
@@ -72,7 +77,7 @@ router.post('/admin/insert_movie/execute', function(req, res) {
     if (err)
       throw  err;
     res.send("Dodano nowy film");
-  })
+  });
 });
 
 router.post('/admin/insert_seance/execute', function(req, res) {
@@ -84,7 +89,7 @@ router.post('/admin/insert_seance/execute', function(req, res) {
     if (err)
       throw  err;
     res.send("Dodano nowy seans");
-  })
+  });
 });
 
 router.post("/admin/update_movie/execute", function (req, res){
@@ -151,11 +156,21 @@ router.post("/admin/update_movie/execute", function (req, res){
       if (err)
         throw  err;
       res.send("Zmodyfikowano film");
-    })
+    });
   }
   else {
     res.send("Nie wybrano filmu");
   }
+});
+
+router.post("/admin/delete_movie/execute", (req, res) => {
+  const sql = "DELETE FROM movies WHERE MovieID IN (" + req.body.ID + ")";
+  db.query(sql, (err) => {
+    if (err)
+      res.send("Brak możliwości usunięcia wybranych filmów");
+    else
+    res.send("Usunięto filmy");
+  });
 });
 
 module.exports = router;
