@@ -29,7 +29,12 @@ router.get('/admin/insert_movie', function(req, res) {
 });
 
 router.get('/admin/update_movie', function(req, res) {
-  res.render('update_movie', {title : 'Kinomaniak'});
+  const sql = "SELECT * FROM movies";
+  db.query(sql, (err, data) => {
+    if (err)
+      throw  err;
+    res.render('update_movie', {title : 'Kinomaniak', data : data});
+  })
 });
 
 router.get('/admin/delete_movie', function(req, res) {
@@ -80,6 +85,77 @@ router.post('/admin/insert_seance/execute', function(req, res) {
       throw  err;
     res.send("Dodano nowy seans");
   })
+});
+
+router.post("/admin/update_movie/execute", function (req, res){
+  const data = {MovieID : req.body.ID,
+    Title : req.body.title,
+    Type : req.body.type,
+    Studio : req.body.studio,
+    Director : req.body.director,
+    Cast : req.body.cast,
+    Description : req.body.descr,
+    Year : req.body.year,
+    Age : req.body.age};
+  let sql = "UPDATE movies SET";
+  let more_than_one_column = false;
+  if (data.Title !== ""){
+    sql = sql + " Title = '" + data.Title + "'";
+    more_than_one_column = true;
+  }
+  if (data.Type !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " Type = '" + data.Type + "'";
+    more_than_one_column = true;
+  }
+  if (data.Studio !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " Studio = '" + data.Studio + "'";
+    more_than_one_column = true;
+  }
+  if (data.Director !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " Director = '" + data.Director + "'";
+    more_than_one_column = true;
+  }
+  if (data.Cast !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " Cast = '" + data.Cast + "'";
+    more_than_one_column = true;
+  }
+  if (data.Description !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " Description = '" + data.Description + "'";
+    more_than_one_column = true;
+  }
+  if (data.Year !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " Year = " + data.Year;
+    more_than_one_column = true;
+  }
+  if (data.Age !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " Age = " + data.Age;
+    more_than_one_column = true;
+  }
+  if (data.MovieID !== ""){
+    sql = sql + " WHERE MovieID = " + data.MovieID;
+    db.query(sql, (err) => {
+      if (err)
+        throw  err;
+      res.send("Zmodyfikowano film");
+    })
+  }
+  else {
+    res.send("Nie wybrano filmu");
+  }
 });
 
 module.exports = router;
