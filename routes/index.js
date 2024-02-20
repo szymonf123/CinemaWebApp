@@ -55,8 +55,39 @@ router.get('/admin/insert_seance', function(req, res) {
   });
 });
 
-router.get('/admin/update_seance', function(req, res) {
-  res.render('update_seance', {title : 'Kinomaniak'});
+router.get('/admin/update_seance', async function(req, res) {
+  try {
+    const sql = "SELECT *, DATE_FORMAT(SeanceDate, '%d.%m.%Y') AS FormattedDate FROM movies NATURAL JOIN seances";
+    const moviesQuery = "SELECT MovieID, Title FROM movies";
+
+    // Wykonanie obu zapytań równolegle
+    const [seances, movies] = await Promise.all([
+      new Promise((resolve, reject) => {
+        db.query(sql, (err, data) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
+          }
+        });
+      }),
+      new Promise((resolve, reject) => {
+        db.query(moviesQuery, (err, data) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
+          }
+        });
+      })
+    ]);
+
+    // Przekazanie wyników do widoku
+    res.render('update_seance', { title: 'Kinomaniak', data: seances, movies: movies });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("Wystąpił błąd podczas pobierania danych.");
+  }
 });
 
 router.get('/admin/delete_seance', function(req, res) {
@@ -74,9 +105,11 @@ router.post('/admin/insert_movie/execute', function(req, res) {
     Age : req.body.age};
   let sql = "INSERT INTO movies SET ?";
   db.query(sql, data, (err) => {
-    if (err)
+    if (err){
+      res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania filmu"});
       throw  err;
-    res.send("Dodano nowy film");
+    }
+    res.render("notification", {title : "Kinomaniak", notification : "Dodano nowy film"});
   });
 });
 
@@ -86,9 +119,11 @@ router.post('/admin/insert_seance/execute', function(req, res) {
   SeanceTime : req.body.seance_time};
   let sql = "INSERT INTO seances SET ?";
   db.query(sql, data, (err) => {
-    if (err)
+    if (err){
+      res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania seansu"});
       throw  err;
-    res.send("Dodano nowy seans");
+    }
+    res.render("notification", {title : "Kinomaniak", notification : "Dodano nowy seans"});
   });
 });
 
@@ -148,18 +183,55 @@ router.post("/admin/update_movie/execute", function (req, res){
     if (more_than_one_column)
       sql = sql + ",";
     sql = sql + " Age = " + data.Age;
-    more_than_one_column = true;
   }
   if (data.MovieID !== ""){
     sql = sql + " WHERE MovieID = " + data.MovieID;
     db.query(sql, (err) => {
       if (err)
         throw  err;
-      res.send("Zmodyfikowano film");
+      res.render("notification", {title : "Kinomaniak", notification : "Zmodyfikowano film"});
     });
   }
   else {
-    res.send("Nie wybrano filmu");
+    res.render("notification", {title : "Kinomaniak", notification : "Nie wybrano filmu"});
+  }
+});
+
+router.post("/admin/update_seance/execute", (req, res) => {
+  const data = {
+    SeanceID : req.body.ID,
+    MovieID : req.body.movie_id,
+    SeanceDate: req.body.seance_date,
+    SeanceTime: req.body.seance_time
+  };
+  let sql = "UPDATE seances SET";
+  let more_than_one_column = false;
+  if (data.MovieID !== ""){
+    sql = sql + " MovieID = " + data.MovieID + "";
+    more_than_one_column = true;
+  }
+  if (data.SeanceDate !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " SeanceDate = '" + data.SeanceDate + "'";
+    more_than_one_column = true;
+  }
+  if (data.SeanceTime !== ""){
+    if (more_than_one_column)
+      sql = sql + ",";
+    sql = sql + " SeanceTime = '" + data.SeanceTime + ":00'";
+  }
+  if (data.SeanceID !== ""){
+    sql = sql + " WHERE SeanceID = " + data.SeanceID;
+    console.log(sql);
+    db.query(sql, (err) => {
+      if (err)
+        throw  err;
+      res.render("notification", {title : "Kinomaniak", notification : "Zmodyfikowano seans"});
+    });
+  }
+  else {
+    res.render("notification", {title : "Kinomaniak", notification : "Nie wybrano seansu"});
   }
 });
 
@@ -167,9 +239,9 @@ router.post("/admin/delete_movie/execute", (req, res) => {
   const sql = "DELETE FROM movies WHERE MovieID IN (" + req.body.ID + ")";
   db.query(sql, (err) => {
     if (err)
-      res.send("Brak możliwości usunięcia wybranych filmów");
+      res.render("notification", {title : "Kinomaniak", notification : "Brak możliwości usunięcia wybranych filmów"});
     else
-    res.send("Usunięto filmy");
+      res.render("notification", {title : "Kinomaniak", notification : "Usunięto wybrane filmy"});
   });
 });
 
