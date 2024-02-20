@@ -110,11 +110,12 @@ router.post('/admin/insert_movie/execute', function(req, res) {
     Age : req.body.age};
   let sql = "INSERT INTO movies SET ?";
   db.query(sql, data, (err) => {
-    if (err){
+    if (err)
       res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania filmu"});
-      throw  err;
-    }
-    res.render("notification", {title : "Kinomaniak", notification : "Dodano nowy film"});
+    else if (Object.values(data).some(value => value === ""))
+      res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania filmu. Puste pola."});
+    else
+      res.render("notification", {title : "Kinomaniak", notification : "Dodano nowy film"});
   });
 });
 
@@ -124,11 +125,12 @@ router.post('/admin/insert_seance/execute', function(req, res) {
   SeanceTime : req.body.seance_time};
   let sql = "INSERT INTO seances SET ?";
   db.query(sql, data, (err) => {
-    if (err){
+    if (err)
       res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania seansu"});
-      throw  err;
-    }
-    res.render("notification", {title : "Kinomaniak", notification : "Dodano nowy seans"});
+    else if (Object.values(data).some(value => value === ""))
+      res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania seansu. Puste pola."});
+    else
+      res.render("notification", {title : "Kinomaniak", notification : "Dodano nowy seans"});
   });
 });
 
@@ -192,8 +194,9 @@ router.post("/admin/update_movie/execute", function (req, res){
   if (data.MovieID !== ""){
     sql = sql + " WHERE MovieID = " + data.MovieID;
     db.query(sql, (err) => {
-      if (err)
-        throw  err;
+      if (err){
+        res.render("notification", {title : "Kinomaniak", notification : "Błąd w modyfikacji filmu"});
+      }
       res.render("notification", {title : "Kinomaniak", notification : "Zmodyfikowano film"});
     });
   }
@@ -230,8 +233,9 @@ router.post("/admin/update_seance/execute", (req, res) => {
     sql = sql + " WHERE SeanceID = " + data.SeanceID;
     console.log(sql);
     db.query(sql, (err) => {
-      if (err)
-        throw  err;
+      if (err){
+        res.render("notification", {title : "Kinomaniak", notification : "Błąd w modyfikacji seansu"});
+      }
       res.render("notification", {title : "Kinomaniak", notification : "Zmodyfikowano seans"});
     });
   }
@@ -244,7 +248,7 @@ router.post("/admin/delete_movie/execute", (req, res) => {
   const sql = "DELETE FROM movies WHERE MovieID IN (" + req.body.ID + ")";
   db.query(sql, (err) => {
     if (err)
-      res.render("notification", {title : "Kinomaniak", notification : "Brak możliwości usunięcia wybranych filmów. Najprawdopodobniej istnieją seanse tego filmu."});
+      res.render("notification", {title : "Kinomaniak", notification : "Brak możliwości usunięcia wybranych filmów. Najprawdopodobniej istnieją seanse tego filmu lub nie wybrano filmów."});
     else
       res.render("notification", {title : "Kinomaniak", notification : "Usunięto wybrane filmy"});
   });
@@ -254,7 +258,7 @@ router.post("/admin/delete_seance/execute", (req, res) => {
   const sql = "DELETE FROM seances WHERE SeanceID IN (" + req.body.ID + ")";
   db.query(sql, (err) => {
     if (err)
-      res.render("notification", {title : "Kinomaniak", notification : "Brak możliwości usunięcia wybranych seansów"});
+      res.render("notification", {title : "Kinomaniak", notification : "Błąd usuwania seansów"});
     else
       res.render("notification", {title : "Kinomaniak", notification : "Usunięto wybrane seanse"});
   });

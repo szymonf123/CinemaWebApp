@@ -9,24 +9,24 @@ block content
                 h1= title
             nav
                 ul(id="navi")
-                    a
+                    a(href="/")
                         li Dane podstawowe
-                    a
+                    a(href="/admin")
                         li Panel moderatora
             article
                 h2 Panel moderatora
                 p Wybierz jedną z dostępnych opcji
                 ul(id="menu")
-                    a
+                    a(href="/admin/insert_movie")
                         li Dodaj film
-                    a
+                    a(href="/admin/insert_seance")
                         li Dodaj seans
-                    a
+                    a(href="/admin/update_movie")
                         li Modyfikuj film
-                    a
+                    a(href="/admin/update_seance")
                         li Modyfikuj seans
-                    a
+                    a(href="/admin/delete_movie")
                         li Usuń film
-                    a
+                    a(href="/admin/delete_seance")
                         li Usuń seans
             footer #{title} 2024
