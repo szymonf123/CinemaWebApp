@@ -108,12 +108,17 @@ router.post('/admin/insert_movie/execute', function(req, res) {
     Description : req.body.descr,
     Year : req.body.year,
     Age : req.body.age};
+  if (Object.values(data).some(value => value === "")) {
+    res.render("notification", {
+      title: "Kinomaniak",
+      notification: "Błąd dodawania filmu. Wymagane pola nie zostały uzupełnione."
+    });
+    return;
+  }
   let sql = "INSERT INTO movies SET ?";
   db.query(sql, data, (err) => {
     if (err)
       res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania filmu"});
-    else if (Object.values(data).some(value => value === ""))
-      res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania filmu. Puste pola."});
     else
       res.render("notification", {title : "Kinomaniak", notification : "Dodano nowy film"});
   });
@@ -123,12 +128,17 @@ router.post('/admin/insert_seance/execute', function(req, res) {
   const data = {MovieID : req.body.ID,
   SeanceDate : req.body.seance_date,
   SeanceTime : req.body.seance_time};
+  if (Object.values(data).some(value => value === "")) {
+    res.render("notification", {
+      title: "Kinomaniak",
+      notification: "Błąd dodawania seansu. Wymagane pola nie zostały uzupełnione."
+    });
+    return;
+  }
   let sql = "INSERT INTO seances SET ?";
   db.query(sql, data, (err) => {
     if (err)
       res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania seansu"});
-    else if (Object.values(data).some(value => value === ""))
-      res.render("notification", {title : "Kinomaniak", notification : "Błąd dodawania seansu. Puste pola."});
     else
       res.render("notification", {title : "Kinomaniak", notification : "Dodano nowy seans"});
   });

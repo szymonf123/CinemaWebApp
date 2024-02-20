@@ -83,6 +83,16 @@ input[name], select{
   font-family: "Calibri Light", serif;
 }
 
+input[type=submit] {
+  font-size: 100%;
+  background-color: white;
+  font-family: "Calibri Light", serif;
+}
+
+input[type=submit]:hover {
+  background-color: lightskyblue;
+}
+
 footer {
   padding-top: 5%;
 }
