@@ -91,7 +91,12 @@ router.get('/admin/update_seance', async function(req, res) {
 });
 
 router.get('/admin/delete_seance', function(req, res) {
-  res.render('delete_seance', {title : 'Kinomaniak'});
+  const sql = "SELECT *, DATE_FORMAT(SeanceDate, '%d.%m.%Y') AS FormattedDate FROM movies NATURAL JOIN seances";
+  db.query(sql, (err, data) => {
+    if (err)
+      throw  err;
+    res.render('delete_seance', {title : 'Kinomaniak', data : data});
+  });
 });
 
 router.post('/admin/insert_movie/execute', function(req, res) {
@@ -239,9 +244,19 @@ router.post("/admin/delete_movie/execute", (req, res) => {
   const sql = "DELETE FROM movies WHERE MovieID IN (" + req.body.ID + ")";
   db.query(sql, (err) => {
     if (err)
-      res.render("notification", {title : "Kinomaniak", notification : "Brak możliwości usunięcia wybranych filmów"});
+      res.render("notification", {title : "Kinomaniak", notification : "Brak możliwości usunięcia wybranych filmów. Najprawdopodobniej istnieją seanse tego filmu."});
     else
       res.render("notification", {title : "Kinomaniak", notification : "Usunięto wybrane filmy"});
+  });
+});
+
+router.post("/admin/delete_seance/execute", (req, res) => {
+  const sql = "DELETE FROM seances WHERE SeanceID IN (" + req.body.ID + ")";
+  db.query(sql, (err) => {
+    if (err)
+      res.render("notification", {title : "Kinomaniak", notification : "Brak możliwości usunięcia wybranych seansów"});
+    else
+      res.render("notification", {title : "Kinomaniak", notification : "Usunięto wybrane seanse"});
   });
 });
 

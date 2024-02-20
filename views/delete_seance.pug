@@ -8,11 +8,31 @@ block content
             header
                 h1= title
             nav
-                ul
+                ul(id="navi")
                     a
                         li Dane podstawowe
                     a
                         li Panel moderatora
             article
                 h2 Usuń seans
+                p Uwaga! Można usuwać naraz wiele seansów.
+                    form(method="POST", class="insert", action="/admin/delete_seance/execute")
+                        div(class="category")
+                            div(class="description") Wybierz film:
+                            table
+                                thead
+                                    tr
+                                        th Wybierz
+                                        th Tytuł
+                                        th Data
+                                        th Godzina
+                                tbody
+                                    each seance in data
+                                        tr
+                                            td
+                                                input(type="checkbox", name="ID", value=seance.SeanceID)
+                                            td= seance.Title
+                                            td= seance.FormattedDate
+                                            td= seance.SeanceTime
+                        input(type="submit")
             footer #{title} 2024
